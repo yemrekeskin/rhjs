@@ -1,0 +1,36 @@
+{
+  "name": "rhjs",
+  "version": "1.0.12",
+  "description": "Request Helper",
+  "keywords": [
+    "XMLHttpRequest",
+    "HttpRequest",
+    "XHR"
+  ],
+  "homepage": "https://github.com/yemrekeskin/rhjs",
+  "bugs": {
+    "url": "https://github.com/yemrekeskin/rhjs/issues",
+    "email": "yemrekeskin@gmail.com"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yemrekeskin/rhjs.git"
+  },
+  "author": "Yunus Emre Keskin <yemrekeskin@gmail.com> (yemrekeskin.com)",
+  "license": "MIT",
+  "private": false,
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "engineStrict": true,
+  "devDependencies": {
+    "jest": "^25.1.0"
+  },
+  "dependencies": {
+    "xmlhttprequest": "^1.8.0"
+  }
+}

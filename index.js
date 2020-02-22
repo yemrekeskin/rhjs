@@ -1,0 +1,78 @@
+'use strict';
+
+const inu = function (str) {
+    if (str === null || str === undefined || str == "null" || str == "undefined") {
+        return true;
+    }
+    return false;
+};
+
+const call = function (type, url, params, success, error, async, token) {
+    try {
+        var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open(type, url, async);
+
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET');
+        if (!inu(token)) {
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        }
+
+        xhr.onreadystatechange = function () {
+            if (xhr.status == 401) {
+                if (typeof error === 'function') {
+                    error.call(this, xhr.responseText, xhr.status);
+                }
+            }
+        }.bind(this);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                if (typeof success === 'function') {
+                    var response = {};
+                    if (xhr.responseText != "") {
+                        response = JSON.parse(xhr.responseText);
+                    }
+                    success.call(this, response);
+                }
+            } else {
+                if (typeof error === 'function') {
+                    if (xhr.status === 999) {
+                        error.call(this, xhr.responseText);
+                        console.log(xhr.statusText);
+                    } else {
+                        error.call(this, xhr.statusText);
+                        console.log(xhr.statusText);
+                    }
+                }
+            }
+        }.bind(this);
+
+        if (inu(params)) {
+            xhr.send();
+        } else {
+            xhr.send(JSON.stringify(params));
+        }
+    } catch (e) {
+        if (typeof error === 'function') {
+            error.call(this, e);
+        }
+    }
+};
+
+module.exports.post = (url, params, success, error, token) => {
+    call('post', url, params, success, error, true, token);
+}
+
+module.exports.postSync = (url, params, success, error, token) => {
+    call('post', url, params, success, error, false, token);
+}
+
+module.exports.get = (url, success, error, token) => {
+    call('get', url, null, success, error, true, token);
+}
+
+
